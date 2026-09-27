@@ -15,7 +15,7 @@ export async function onRequestPost(context) {
     return jsonResponse({ error: 'Too many requests. Please slow down.' }, 429);
   }
 
-  if (!isOriginAllowed(request)) {
+  if (!isOriginAllowed(request, env)) {
     return jsonResponse({ error: 'Origin not allowed' }, 403);
   }
 

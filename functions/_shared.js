@@ -49,12 +49,20 @@ export async function consumeFlow(env, state) {
   }
 }
 
-/** Reject cross-origin requests; same-origin (this Pages deployment) is always allowed. */
-export function isOriginAllowed(request) {
+/**
+ * Reject cross-origin requests. Allowed origin is env.APP_DOMAIN when set
+ * (e.g. "spotgen.hiiruki.moe"), otherwise falls back to the request's own origin
+ * (covers *.pages.dev preview URLs where APP_DOMAIN isn't set).
+ */
+export function isOriginAllowed(request, env) {
   const origin = request.headers.get('Origin');
   if (!origin) return true; // no Origin header (e.g. server-to-server, curl) — allow
-  const selfOrigin = new URL(request.url).origin;
-  return origin === selfOrigin;
+
+  const allowedOrigin = env && env.APP_DOMAIN
+    ? `https://${env.APP_DOMAIN}`
+    : new URL(request.url).origin;
+
+  return origin === allowedOrigin;
 }
 
 export function jsonResponse(data, status = 200) {

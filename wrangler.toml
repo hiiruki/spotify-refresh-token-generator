@@ -8,3 +8,8 @@ pages_build_output_dir = "public"
 [[kv_namespaces]]
 binding = "OAUTH_KV"
 id = "c162b6532f554ea688f9cc8f82f00961"
+
+# Local dev only. In production, set this under: Workers & Pages → your project →
+# Settings → Environment variables → add "APP_DOMAIN" for both Production and Preview.
+[vars]
+APP_DOMAIN = "spotgen.hiiruki.moe"
