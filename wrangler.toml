@@ -7,4 +7,4 @@ pages_build_output_dir = "public"
 # Variable name must be OAUTH_KV, pointing at whatever KV namespace you create.
 [[kv_namespaces]]
 binding = "OAUTH_KV"
-id = "spotify-refresh-token-generator"
+id = "c162b6532f554ea688f9cc8f82f00961"
