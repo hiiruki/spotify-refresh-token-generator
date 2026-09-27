@@ -1,0 +1,20 @@
+{
+  "name": "spotify-refresh-token-generator",
+  "version": "1.0.0",
+  "description": "Web application to generate and test Spotify API Refresh Tokens with real-time verbose logs",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "spotify",
+    "oauth",
+    "refresh-token",
+    "spotify-api",
+    "token-generator"
+  ],
+  "author": "hiiruki",
+  "license": "MIT"
+}

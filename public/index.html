@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify API Refresh Token Generator</title>
+  <meta name="description"
+    content="Generate and test Spotify API OAuth 2.0 Refresh Tokens securely with real-time verbose logs and multi-language code snippets.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="#1DB954">
+            <path
+              d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>
+            Spotify Refresh Token Generator
+            <span class="brand-badge">OAuth 2.0</span>
+          </h1>
+          <p class="brand-subtitle">Generate permanent refresh tokens for Spotify Web API with real-time verbose logs
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnHelpGuide" class="btn btn-secondary btn-sm" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          Setup Guide
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Input Form -->
+      <section class="left-col">
+        <!-- Step 1: Credentials Card -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <span class="step-indicator">1</span>
+              Spotify App Credentials
+            </h2>
+          </div>
+
+          <form id="authForm" autocomplete="off">
+            <!-- Client ID -->
+            <div class="form-group">
+              <label class="form-label" for="clientId">
+                <span>Client ID <strong style="color: var(--accent-rose)">*</strong></span>
+                <span id="helpClientId" class="form-label-help">Where to find this?</span>
+              </label>
+              <div class="input-wrapper">
+                <input type="text" id="clientId" name="clientId" class="input-field"
+                  placeholder="e.g. 4c3b2a10987654321fedcba098765432" required spellcheck="false">
+              </div>
+              <p class="form-hint">Available in your Spotify Developer Dashboard > App Settings</p>
+            </div>
+
+            <!-- Client Secret -->
+            <div class="form-group">
+              <label class="form-label" for="clientSecret">
+                <span>Client Secret <strong style="color: var(--accent-rose)">*</strong></span>
+              </label>
+              <div class="input-wrapper">
+                <input type="password" id="clientSecret" name="clientSecret" class="input-field"
+                  placeholder="e.g. e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0" required spellcheck="false">
+                <button type="button" id="btnToggleSecret" class="input-action-btn" title="Toggle Secret Visibility">
+                  <svg id="iconEye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              <p class="form-hint">Stored safely in your browser session memory only</p>
+            </div>
+
+            <!-- Redirect URI -->
+            <div class="form-group">
+              <label class="form-label" for="redirectUri">
+                <span>Redirect URI (Callback) <strong style="color: var(--accent-rose)">*</strong></span>
+                <button type="button" id="btnCopyRedirectUri" class="btn btn-secondary btn-sm"
+                  style="padding: 0.2rem 0.5rem; font-size: 0.7rem;">
+                  Copy URI
+                </button>
+              </label>
+
+              <div class="input-wrapper">
+                <input type="text" id="redirectUri" name="redirectUri" class="input-field"
+                  value="http://127.0.0.1:3000/callback" placeholder="http://127.0.0.1:3000/callback" spellcheck="false"
+                  required>
+              </div>
+              <div class="alert-banner" style="margin-top: 0.6rem; flex-direction: column; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <strong>Spotify Developer Policy Update (April &amp; Nov 2025):</strong>
+                </div>
+                <div style="font-size: 0.77rem; line-height: 1.5; color: #fde68a;">
+                  Per <a href="https://developer.spotify.com/documentation/web-api/concepts/redirect_uri"
+                    target="_blank" rel="noopener noreferrer"
+                    style="color: var(--spotify-green); font-weight: 600; text-decoration: underline;">Spotify Official
+                    Redirect URI Docs</a>:
+                  <ul style="margin: 0.35rem 0 0.35rem 1.15rem; list-style-type: disc;">
+                    <li><strong>HTTPS Required</strong> for all public URLs (e.g.
+                      <code>https://example.com/callback</code>).</li>
+                    <li><strong>Explicit Loopback:</strong> Must use explicit IPv4
+                      (<code>http://127.0.0.1:3000/callback</code>) or IPv6 (<code>http://[::1]:3000/callback</code>).
+                    </li>
+                    <li><strong style="color: #f87171;"><code>localhost</code> is strictly NOT allowed</strong> by
+                      Spotify anymore.</li>
+                    <li>Dynamic ports are permitted for loopback IP literals (IETF RFC 8252).</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Manual Code / Callback URL Fallback Box -->
+            <div id="manualExchangeBox"
+              style="background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 0.9rem; margin-bottom: 1.25rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.4rem;">
+                <span
+                  style="font-size: 0.8rem; font-weight: 600; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.35rem;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                  </svg>
+                  Manual Exchange (Fallback)
+                </span>
+              </div>
+              <p style="font-size: 0.73rem; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.35;">
+                If popup window redirected to an external or custom URL, copy the redirected URL from your browser
+                address bar (containing <code>?code=...</code>) and paste it below:
+              </p>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="inputManualCallbackUrl" class="input-field"
+                  placeholder="Paste URL or code: http://127.0.0.1:3000/callback?code=AQB..."
+                  style="font-size: 0.75rem; padding: 0.5rem 0.7rem;">
+                <button type="button" id="btnManualExchange" class="btn btn-secondary btn-sm"
+                  style="flex-shrink: 0; white-space: nowrap;">
+                  Exchange Code
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Scopes Card -->
+            <div class="card"
+              style="margin-top: 1.25rem; margin-bottom: 1.25rem; padding: 1.2rem; background: rgba(13, 17, 23, 0.6);">
+              <div class="card-header" style="margin-bottom: 0.75rem;">
+                <h3 class="card-title" style="font-size: 0.95rem;">
+                  <span class="step-indicator">2</span>
+                  Select Spotify Scopes (Permissions)
+                </h3>
+              </div>
+
+              <!-- Presets -->
+              <div class="scopes-presets">
+                <button type="button" class="preset-chip active" data-preset="all">⭐ Select All (Recommended for
+                  Bots)</button>
+                <button type="button" class="preset-chip" data-preset="playback">🎵 Player & Playback</button>
+                <button type="button" class="preset-chip" data-preset="playlists">📑 Playlists</button>
+                <button type="button" class="preset-chip" data-preset="readonly">👀 Read Only</button>
+                <button type="button" class="preset-chip" data-preset="none">Deselect All</button>
+              </div>
+
+              <button type="button" id="btnToggleScopeList" class="scopes-accordion-toggle">
+                <span id="scopeCountLabel">19 Scopes Selected</span>
+                <span id="scopeToggleIcon">▼</span>
+              </button>
+
+              <div id="scopesListContainer" class="scopes-list-container" style="display: none;">
+                <!-- Scopes items injected safely via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="btnSubmit" class="btn btn-primary btn-action-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              Generate Refresh Token
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Right Column: Verbose Terminal & Results -->
+      <section class="right-col">
+        <!-- Verbose Terminal Console -->
+        <div class="terminal-card">
+          <div class="terminal-header">
+            <div class="terminal-title">
+              <div class="terminal-dots">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+              </div>
+              <span>VERBOSE LOGS CONSOLE</span>
+            </div>
+            <div class="terminal-controls">
+              <span id="statusPill" class="status-pill status-idle">IDLE</span>
+              <button type="button" id="btnCopyLogs" class="btn btn-secondary btn-sm" title="Copy Verbose Logs">
+                Copy Logs
+              </button>
+              <button type="button" id="btnClearLogs" class="btn btn-secondary btn-sm" title="Clear Console">
+                Clear
+              </button>
+            </div>
+          </div>
+          <div id="terminalBody" class="terminal-body">
+            <!-- Log entries injected here via JS -->
+          </div>
+        </div>
+
+        <!-- Token Results Section (Hidden until generated) -->
+        <div id="resultsCard" class="card results-card" style="display: none;">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--spotify-green)"
+                stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              Generated Tokens & OAuth Summary
+            </h2>
+            <span class="brand-badge" style="background: rgba(34, 197, 94, 0.2); color: #4ade80;">Ready to Use</span>
+          </div>
+
+          <!-- Refresh Token Box -->
+          <div class="token-highlight-box">
+            <div class="token-header">
+              <span class="token-type-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                REFRESH TOKEN (Long-lived)
+              </span>
+              <div class="tooltip-wrapper">
+                <span class="permanent-tag clickable-badge">
+                  Permanent ⓘ
+                </span>
+                <div class="tooltip-content">
+                  <div class="tooltip-header">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    <span>Refresh Token Lifecycle Info</span>
+                  </div>
+                  <p><strong>• No Time Limit:</strong> Valid indefinitely as long as used at least once every
+                    <strong>180 days</strong> (inactivity window).</p>
+                  <p><strong>• Auto Renewal:</strong> Each time you refresh an access token, the 180-day inactivity
+                    timer resets.</p>
+                  <p><strong>• Manual Revoke:</strong> Instantly invalidated if you change password or remove app access
+                    in Spotify Settings.</p>
+                </div>
+              </div>
+            </div>
+            <div class="token-string-display">
+              <span id="resRefreshToken" class="token-code">...</span>
+              <button type="button" id="btnCopyRefreshToken" class="btn btn-primary btn-sm">
+                Copy Token
+              </button>
+            </div>
+            <div class="token-footnote">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span><strong>Note:</strong> Valid indefinitely as long as used at least once every <strong>180
+                  days</strong> (inactivity period) or until revoked.</span>
+            </div>
+          </div>
+
+          <!-- Access Token Box -->
+          <div class="token-highlight-box"
+            style="background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.25);">
+            <div class="token-header">
+              <span class="token-type-title" style="color: var(--accent-cyan);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                ACCESS TOKEN (Temporary)
+              </span>
+              <span id="tokenExpiryBadge" class="permanent-tag"
+                style="background: var(--accent-cyan); color: #000;">Valid for 3600s</span>
+            </div>
+            <div class="token-string-display">
+              <span id="resAccessToken" class="token-code" style="color: #38bdf8;">...</span>
+              <button type="button" id="btnCopyAccessToken" class="btn btn-secondary btn-sm">
+                Copy Token
+              </button>
+            </div>
+          </div>
+
+          <!-- Metadata Grid -->
+          <div class="token-meta-grid">
+            <div class="meta-box">
+              <div class="meta-label">Token Type</div>
+              <div id="resTokenType" class="meta-val">Bearer</div>
+            </div>
+            <div class="meta-box">
+              <div class="meta-label">Expires In</div>
+              <div id="resExpiresIn" class="meta-val">3600 seconds</div>
+            </div>
+            <div class="meta-box">
+              <div class="meta-label">Granted Scopes</div>
+              <div id="resScopeCount" class="meta-val">0 scopes</div>
+            </div>
+          </div>
+
+          <!-- Verification Test Actions -->
+          <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+            <button type="button" id="btnTestProfile" class="btn btn-secondary btn-sm" style="flex: 1;">
+              ⚡ Test Access Token (/v1/me)
+            </button>
+            <button type="button" id="btnTestRefresh" class="btn btn-secondary btn-sm" style="flex: 1;">
+              🔄 Test Refresh Token
+            </button>
+          </div>
+
+          <!-- Profile Badge (Injected on test) -->
+          <div id="userProfileBadge" class="user-profile-badge" style="display: none;">
+            <img id="userAvatar" class="user-avatar" src="" alt="Avatar" width="42" height="42">
+            <div class="user-info-text">
+              <h4 id="userDisplayName">-</h4>
+              <p id="userMetaDetails">-</p>
+            </div>
+          </div>
+
+          <!-- Integration Code Tabs -->
+          <div class="tabs-container">
+            <div class="tab-nav">
+              <button type="button" class="tab-btn active" data-tab="env">.env File</button>
+              <button type="button" class="tab-btn" data-tab="nodejs">Node.js</button>
+              <button type="button" class="tab-btn" data-tab="python">Python</button>
+              <button type="button" class="tab-btn" data-tab="curl">cURL</button>
+            </div>
+
+            <div class="code-container">
+              <button type="button" id="btnCopyCodeSnippet" class="btn btn-secondary btn-sm code-copy-btn">
+                Copy Snippet
+              </button>
+              <pre id="codeSnippetContent"><code>// Code snippet will appear here</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Help Guide Modal -->
+  <div id="helpModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">How to Get Spotify Client ID & Secret</h3>
+        <button type="button" id="btnCloseHelpModal" class="btn btn-secondary btn-sm">✕ Close</button>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li>Open the <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener noreferrer"
+              style="color: var(--spotify-green); font-weight: 600;">Spotify Developer Dashboard</a> and log in with
+            your Spotify account.</li>
+          <li>Click the <strong>Create app</strong> button in the top right corner.</li>
+          <li>Fill in the <strong>App name</strong> (e.g. <em>My Bot</em>) and <strong>App description</strong>.</li>
+          <li>Under the <strong>Redirect URIs</strong> section, add the following callback URL:
+            <div style="margin: 0.5rem 0;">
+              <code>http://127.0.0.1:3000/callback</code>
+            </div>
+            <small style="color: var(--text-muted);">(Or your production Cloudflare Pages URL when deployed)</small>
+          </li>
+          <li>Select the API you wish to use (check <strong>Web API</strong>), accept the terms of service, and click
+            <strong>Save</strong>.</li>
+          <li>Once created, open your app's <strong>Settings</strong> tab.</li>
+          <li>Copy your <strong>Client ID</strong>, then click <strong>View client secret</strong> to copy your
+            <strong>Client Secret</strong>.</li>
+          <li>Paste your Client ID and Client Secret into the generator form, select your desired scopes, and click
+            <strong>Generate Refresh Token</strong>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/app.js"></script>
+</body>
+
+</html>
