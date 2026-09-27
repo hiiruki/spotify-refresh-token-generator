@@ -16,5 +16,8 @@
     "token-generator"
   ],
   "author": "hiiruki",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.141.0"
+  }
 }
