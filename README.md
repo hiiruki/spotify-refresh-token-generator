@@ -4,9 +4,9 @@ A web application to generate and test Spotify API Refresh Tokens with real-time
 
 ## Screenshots
 
-![Screenshot 1](.github/images/1.png)
-![Screenshot 2](.github/images/2.png)
-![Screenshot 3](.github/images/3.png)
+![Screenshot 1](/.github/images/1.png)
+![Screenshot 2](/.github/images/2.png)
+![Screenshot 3](/.github/images/3.png)
 
 ## License
 
